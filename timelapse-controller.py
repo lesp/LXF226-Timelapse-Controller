@@ -1,4 +1,4 @@
-from picamera import PiCamera
+ffrom picamera import PiCamera
 from gpiozero import MCP3008, Button
 from time import sleep
 from datetime import datetime
@@ -9,13 +9,15 @@ button = Button(17)
 camera = PiCamera()
 
 def capture():
-    for i in range(120):
+    for i in range(timer):
         timestamp = datetime.now().isoformat()
         camera.capture('/home/pi/%s.jpg' % timestamp)
-        sleep(1)
+        sleep(delay)
     
 camera.start_preview(fullscreen=False, window = (0, 0, 640, 480))
 try:
+    timer = int(input("How long in minutes should the timelapse run for?"))
+    delay = int(input("How long is the delay, in seconds, between shots?"))
     while True:
         brightness = round(pot1.value * 100)
         print("Brightness",brightness)
@@ -31,4 +33,4 @@ try:
 except KeyboardInterrupt:
     camera.stop_preview()
 finally:
-    print("EXIT")
+    print("TIMELAPSE EXITING")
